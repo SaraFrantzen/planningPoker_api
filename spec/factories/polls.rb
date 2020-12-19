@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :poll do
-    title { "MyString" }
-    description { "MyText" }
+    title { "MyTitle" }
+    description { "MyDescription" }
   end
 end

@@ -15,11 +15,11 @@ RSpec.describe 'GET /api/polls', type: :request do
     end
 
     it 'is expected to return a specific poll title' do
-      expect(response_json['polls'].first['title']).to eq 'MyString'
+      expect(response_json['polls'].first['title']).to eq 'MyTitle'
     end
 
     it 'is expected to return a specific poll description' do
-      expect(response_json['polls'].second['description']).to eq ['myDescription']
+      expect(response_json['polls'].second['description']).to eq ['MyDescription']
     end
 
     it 'is expected to return 5 polls' do
