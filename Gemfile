@@ -8,6 +8,8 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
+gem "active_model_serializers"
+gem "active_model_validates_intersection_of"
 
 group :development, :test do
   gem 'coveralls',  require: false
