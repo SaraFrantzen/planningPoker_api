@@ -1,7 +1,8 @@
 class Api::PollsController < ApplicationController
+  
   def index
-    binding.pry
     polls = Poll.all
-    render json: polls
+    render json: polls, each_serializer: PollsIndexSerializer
   end
 end
+ 
