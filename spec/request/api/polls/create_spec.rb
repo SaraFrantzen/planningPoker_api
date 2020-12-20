@@ -29,6 +29,30 @@ RSpec.describe 'POST /api/polls', type: :request do
     it 'creates an poll' do
       poll = Poll.last
       expect(poll.title).to eq 'API can provide polls index'
+      expect(poll.description).to include 'As an API'
+      expect(poll.tasks).to eq 'index action, routes to the action, polls model: title, description, polls Index in serializer'
+      expect(poll.points).to eq [nil]
+    end
+  end
+
+  describe "without valid params" do
+    before do
+      post "/api/polls",
+           params: {
+             poll: {
+               title: "API can provide polls index",
+             },
+           }, headers: headers
+    end
+
+    it "responds with unprocessable entity status" do
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it "returns a unsuccesfully message if params are blank" do
+      expect(response_json["message"]).to eq "Description can't be blank, Tasks can't be blank"
     end
   end
 end
+
+
