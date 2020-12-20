@@ -7,7 +7,7 @@ class Api::PollsController < ApplicationController
   end
 
   def create
-    poll = current_user.polls.create(polls_params)
+    poll = current_user.polls.create(poll_params)
 
     if poll.persisted?
       render json: { message: 'successfully saved' }
@@ -18,7 +18,7 @@ class Api::PollsController < ApplicationController
 
   private
 
-  def polls_params
+  def poll_params
     params.require(:poll).permit(:title, :description, :tasks, points: [])
   end
 end

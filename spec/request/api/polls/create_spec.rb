@@ -50,7 +50,7 @@ RSpec.describe 'POST /api/polls', type: :request do
     end
 
     it "returns a unsuccesfully message if params are blank" do
-      expect(response_json["message"]).to eq "Description can't be blank, Tasks can't be blank"
+      expect(response_json["message"]).to eq "Description can't be blank, Tasks can't be blank, and Points can't be blank"
     end
   end
 end
