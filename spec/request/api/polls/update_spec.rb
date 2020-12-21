@@ -24,5 +24,27 @@ RSpec.describe 'PUT /api/polls', type: :request do
       poll = Poll.last
       expect(poll.team).to eq [1, 2, user.id]
     end
-	end
+  end
+
+  describe 'unsuccessfully - user already joined a poll' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: { team: user.id.to_s }
+          }, headers: headers
+    end
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: { team: user.id.to_s }
+          }, headers: headers
+    end
+    it 'responds with unprocessable_entity' do
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it 'returns error message' do
+      expect(response_json['message']).to eq 'You already joined this poll'
+    end
+  end
 end
