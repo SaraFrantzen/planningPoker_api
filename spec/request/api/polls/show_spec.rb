@@ -25,5 +25,18 @@ RSpec.describe 'GET /api/polls', type: :request do
     it 'returns a specific poll tasks' do
       expect(response_json['poll']['tasks']).to eq 'MyTasks'
     end
+	end
+	
+	describe "request with wrong id fails" do
+    before do
+      get "/api/polls/wrongId",
+          headers: headers
+    end
+    it "responds with not found status" do
+      expect(response).to have_http_status :not_found
+    end
+    it "returns error message" do
+      expect(response_json["error_message"]).to eq "Sorry, that poll does not exist"
+    end
   end
 end
