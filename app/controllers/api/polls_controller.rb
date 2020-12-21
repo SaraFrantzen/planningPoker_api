@@ -18,7 +18,7 @@ class Api::PollsController < ApplicationController
 
   def show
     poll = Poll.find(params[:id])
-    render json: poll
+    render json: poll, serializer: PollsShowSerializer
   rescue StandardError => e
     render json: { error_message: 'Sorry, that poll does not exist' }, status: :not_found
   end

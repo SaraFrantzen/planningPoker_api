@@ -20,7 +20,7 @@ RSpec.describe 'GET /api/polls', type: :request do
       expect(response_json['poll']['description']).to eq 'MyDescription'
     end
     it 'returns a specific poll skills' do
-      expect(response_json['poll']['points']).to eq %w[2]
+      expect(response_json['poll']['points']).to eq [2]
     end
     it 'returns a specific poll tasks' do
       expect(response_json['poll']['tasks']).to eq 'MyTasks'
