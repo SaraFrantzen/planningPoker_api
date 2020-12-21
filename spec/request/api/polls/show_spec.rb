@@ -25,6 +25,9 @@ RSpec.describe 'GET /api/polls', type: :request do
     it 'returns a specific poll tasks' do
       expect(response_json['poll']['tasks']).to eq 'MyTasks'
     end
+    it "returns team for specific poll" do
+      expect(response_json["poll"]["team"]).to eq [1, 2]
+    end
 	end
 	
 	describe "request with wrong id fails" do

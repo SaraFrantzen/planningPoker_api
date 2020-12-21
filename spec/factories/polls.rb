@@ -4,6 +4,7 @@ FactoryBot.define do
     description { "MyDescription" }
     tasks { "MyTasks" }
     points { [2] }
+    team { [1, 2]}
     association :user, factory: :user
   end
 end
