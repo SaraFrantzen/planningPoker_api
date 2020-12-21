@@ -3,7 +3,7 @@ FactoryBot.define do
     title { "MyTitle" }
     description { "MyDescription" }
     tasks { "MyTasks" }
-    points { [nil] }
+    points { [2] }
     association :user, factory: :user
   end
 end
