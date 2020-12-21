@@ -1,5 +1,5 @@
 class Api::PollsController < ApplicationController
-  before_action :authenticate_user!, only: :create
+  before_action :authenticate_user!, only: [:create, :update]
 
   def index
     polls = Poll.all
@@ -22,9 +22,20 @@ class Api::PollsController < ApplicationController
     render json: { error_message: 'Sorry, that poll does not exist' }, status: :not_found
   end
 
+  def update
+    poll = Poll.find(params[:id])
+    if poll.team.include?(current_user.id)
+      render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
+    else
+      poll.team.push(current_user.id)
+      poll.save!
+      render json: { message: 'successfully joined this poll' }, status: :ok
+    end
+  end
+
   private
 
   def poll_params
-    params.require(:poll).permit(:title, :description, :tasks, points: [])
+    params.require(:poll).permit(:title, :description, :tasks, points: [], team: [])
   end
 end
