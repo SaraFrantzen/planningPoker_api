@@ -8,8 +8,8 @@ RSpec.describe 'PUT /api/polls', type: :request do
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { 
-              points: [3]
+            poll: {
+              points: 3
             }
           }, headers: headers
     end
@@ -32,7 +32,9 @@ RSpec.describe 'PUT /api/polls', type: :request do
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.uid }
+            poll: {
+              team: [user.uid]
+            }
           }, headers: headers
     end
 
@@ -46,7 +48,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with team' do
       poll = Poll.last
-      expect(poll.team).to eq ["teamMember1@epidemic.com", "teamMember2@epidemic.com", user.uid]
+      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.uid]
     end
   end
 
