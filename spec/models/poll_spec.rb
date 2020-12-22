@@ -4,7 +4,6 @@ RSpec.describe Poll, type: :model do
 
   it "should have a valid Factory" do
     expect(create(:poll)).to be_valid
-  
   end
 
   describe "Database table" do
@@ -12,6 +11,7 @@ RSpec.describe Poll, type: :model do
     it { is_expected.to have_db_column :description }
     it { is_expected.to have_db_column :tasks }
     it { is_expected.to have_db_column :points }
+    it { is_expected.to have_db_column :team }
   end
 
   describe "Validations" do
