@@ -31,6 +31,7 @@ class Api::PollsController < ApplicationController
       poll.save!
       render json: { message: 'successfully joined this poll' }, status: :ok
     end
+    
   end
 
   private
