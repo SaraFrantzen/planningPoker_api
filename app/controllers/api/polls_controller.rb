@@ -24,10 +24,10 @@ class Api::PollsController < ApplicationController
 
   def update
     poll = Poll.find(params[:id])
-    if poll.team.include?(current_user.id)
+    if poll.team.include?(current_user.uid)
       render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
     else
-      poll.team.push(current_user.id)
+      poll.team.push(current_user.uid)
       poll.save!
       render json: { message: 'successfully joined this poll' }, status: :ok
     end
