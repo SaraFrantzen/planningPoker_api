@@ -31,7 +31,7 @@ class Api::PollsController < ApplicationController
     else
       poll.team.push(current_user.uid)
       poll.save!
-      render json: { message: 'successfully joined this poll' }, status: :ok
+      render json: { message: 'successfully updated' }, status: :ok
     end
   end
 

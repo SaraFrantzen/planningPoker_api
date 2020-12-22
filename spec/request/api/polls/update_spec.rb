@@ -19,7 +19,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message']).to eq 'successfully voted'
+      expect(response_json['message']).to eq 'successfully updated'
     end
 
     it 'updates an poll with points' do
@@ -28,7 +28,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'user successfully apply to join a poll' do
+  describe 'user successfully apply to join a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -43,7 +43,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message']).to eq 'successfully joined this poll'
+      expect(response_json['message']).to eq 'successfully updated'
     end
 
     it 'updates an poll with team' do
@@ -52,7 +52,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'unsuccessfully - user already joined a poll' do
+  describe 'unsuccessfully - user already joined a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
