@@ -1,5 +1,5 @@
 class Api::PollsController < ApplicationController
-  before_action :authenticate_user!, only: %i[create update]
+  before_action :authenticate_user!, only: [:create]
 
   def index
     polls = Poll.all
