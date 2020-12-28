@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_100740) do
+ActiveRecord::Schema.define(version: 2020_12_28_091617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_100740) do
     t.integer "points", default: [], array: true
     t.bigint "user_id"
     t.string "team", default: [], array: true
+    t.text "votes"
     t.index ["user_id"], name: "index_polls_on_user_id"
   end
 
