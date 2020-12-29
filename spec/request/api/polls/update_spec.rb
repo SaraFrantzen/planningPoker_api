@@ -4,11 +4,14 @@ RSpec.describe 'PUT /api/polls', type: :request do
   let(:credentials) { user.create_new_auth_token }
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
 
-  describe 'user successfully apply to join a poll' do
+  describe 'user successfully vote on a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.id.to_s }
+            poll: {
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
+            }
           }, headers: headers
     end
 
@@ -17,16 +20,66 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message']).to eq 'successfully joined this poll'
+      expect(response_json['message']).to eq 'successfully voted'
+    end
+
+    it 'updates an poll with points' do
+      poll = Poll.last
+      expect(poll.points).to eq [2, 3]
+    end
+
+    it 'updates an poll with votes' do
+      poll = Poll.last
+      expect(poll.votes).to eq "#{user.uid}"=>"#{3}"
+    end
+  end
+
+  describe 'unsuccessfully join - not authorized' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
+            }
+          }
+    end
+
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unauthorized
+    end
+
+  
+
+ 
+  end
+
+
+  describe 'user successfully apply to join a poll' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              team: [user.uid]
+            }
+          }, headers: headers
+    end
+
+    it 'responds with ok status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns success message' do
+      expect(response_json['message']).to eq 'successfully joined'
     end
 
     it 'updates an poll with team' do
       poll = Poll.last
-      expect(poll.team).to eq ["teamMember1@epidemic.com", "teamMember2@epidemic.com", user.uid]
+      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.uid]
     end
   end
 
-  describe 'unsuccessfully - user already joined a poll' do
+  describe 'unsuccessfully join - user already joined a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
