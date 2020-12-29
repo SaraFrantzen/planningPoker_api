@@ -23,20 +23,11 @@ class Api::PollsController < ApplicationController
   end
 
   def update
-    poll = Poll.find(params[:id])
-    poll.points.push(params['poll']['points'])
-    poll.votes = params['poll']['votes']
-    poll.votes.merge!(current_user.uid => params['poll']['points'])
-    poll.save!
-    
-        if poll.team.include?(current_user.uid)
-           render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
-        else
-    
-           poll.team.push(current_user.uid)
-           poll.save!
-           render json: { message: 'successfully updated' }, status: :ok
-         end
+    if params['poll']['team']
+      team_update
+    elsif params['poll']['points']
+      points_update
+    end
   end
 
   private
@@ -49,7 +40,27 @@ class Api::PollsController < ApplicationController
     current_user.uid
   end
 
-  def user_vote
-    poll.points
+  def team_update
+    poll = Poll.find(params[:id])
+    if poll.team.include?(current_user.uid)
+      render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
+    else
+      poll.team.push(current_user.uid)
+      poll.save!
+      render json: { message: 'successfully updated' }, status: :ok
+    end
+  end
+
+  def points_update
+    poll = Poll.find(params[:id])
+    if poll.persisted?
+      poll.points.push(params['poll']['points'])
+      poll.votes = params['poll']['votes']
+      poll.votes.merge!(current_user.uid => params['poll']['points'])
+      poll.save!
+      render json: { message: 'successfully updated' }, status: :ok
+    else
+      error_message(poll.errors)
+    end
   end
 end

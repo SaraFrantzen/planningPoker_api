@@ -30,9 +30,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
- 
-
-      expect(poll.votes).to eq user.uid=>"3"
+      expect(poll.votes).to eq "#{user.uid}"=>"#{3}"
     end
   end
 
