@@ -58,7 +58,7 @@ class Api::PollsController < ApplicationController
       poll.votes = params['poll']['votes']
       poll.votes.merge!(current_user.uid => params['poll']['points'])
       poll.save!
-      render json: { message: 'successfully voted', votes: poll.votes, points: params['poll']['points']}, status: :ok
+      render json: { message: 'successfully voted', votes: poll.votes, points: poll.points}, status: :ok
     else
       render status: :unauthorized
     end
