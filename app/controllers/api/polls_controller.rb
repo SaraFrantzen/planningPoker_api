@@ -25,7 +25,7 @@ class Api::PollsController < ApplicationController
   def update
     if params['poll']['team']
       team_update
-    elsif params['poll']['points']
+    elsif params['poll']['votes']
       points_update
     end
   end
@@ -47,7 +47,7 @@ class Api::PollsController < ApplicationController
     else
       poll.team.push(current_user.uid)
       poll.save!
-      render json: { message: 'successfully updated' }, status: :ok
+      render json: { message: 'successfully joined', team: poll.team }, status: :ok
     end
   end
 
@@ -58,9 +58,9 @@ class Api::PollsController < ApplicationController
       poll.votes = params['poll']['votes']
       poll.votes.merge!(current_user.uid => params['poll']['points'])
       poll.save!
-      render json: { message: 'successfully updated' }, status: :ok
+      render json: { message: 'successfully voted', votes: poll.votes, points: params['poll']['points']}, status: :ok
     else
-      error_message(poll.errors)
+      render status: :unauthorized
     end
   end
 end

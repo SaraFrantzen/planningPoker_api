@@ -20,7 +20,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message']).to eq 'successfully updated'
+      expect(response_json['message']).to eq 'successfully voted'
     end
 
     it 'updates an poll with points' do
@@ -33,6 +33,27 @@ RSpec.describe 'PUT /api/polls', type: :request do
       expect(poll.votes).to eq "#{user.uid}"=>"#{3}"
     end
   end
+
+  describe 'unsuccessfully join - not authorized' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
+            }
+          }
+    end
+
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unauthorized
+    end
+
+  
+
+ 
+  end
+
 
   describe 'user successfully apply to join a poll' do
     before do
@@ -49,7 +70,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message']).to eq 'successfully updated'
+      expect(response_json['message']).to eq 'successfully joined'
     end
 
     it 'updates an poll with team' do
@@ -58,7 +79,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  describe 'unsuccessfully - user already joined a poll' do
+  describe 'unsuccessfully join - user already joined a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
