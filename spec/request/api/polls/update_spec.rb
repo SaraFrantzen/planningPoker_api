@@ -9,7 +9,8 @@ RSpec.describe 'PUT /api/polls', type: :request do
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              points: 3
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
             }
           }, headers: headers
     end
@@ -25,6 +26,13 @@ RSpec.describe 'PUT /api/polls', type: :request do
     it 'updates an poll with points' do
       poll = Poll.last
       expect(poll.points).to eq [2, 3]
+    end
+
+    it 'updates an poll with votes' do
+      poll = Poll.last
+ 
+
+      expect(poll.votes).to eq user.uid=>"3"
     end
   end
 
