@@ -3,7 +3,50 @@ RSpec.describe 'PUT /api/polls', type: :request do
   let(:user) { create(:user) }
   let(:credentials) { user.create_new_auth_token }
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
+  let!(:user1) { create(:user, email: 're-vote_user@mail.com') }
 
+  
+  describe 'user successfully un-vote on a poll' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
+            }
+          }, headers: headers
+    end
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              points: 3,
+              votes: { "#{user.uid}": "#{poll.points}"}
+            }
+          }, headers: headers
+    end
+
+    it 'responds with ok status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns success message' do
+      expect(response_json['message']).to eq 'successfully un-voted'
+    end
+
+    it 'updates an poll with votes' do
+      poll = Poll.last
+      expect(poll.votes).to eq :"votingUser1@mail.com"=>0, :"votingUser2@mail.com"=>2
+    end
+  end
+  
+  
+  
+  
+  
+  
+  
+  
   describe 'user successfully vote on a poll' do
     before do
       put "/api/polls/#{poll.id}",
@@ -30,7 +73,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq :"secondmember@mail.com"=>2, :"teamMember1@epidemic.com"=>0,"#{user.uid}"=>"#{3}"
+      expect(poll.votes).to eq :"votingUser2@mail.com"=>2, :"votingUser1@mail.com"=>0,"#{user.uid}"=>"#{3}"
     end
   end
 
@@ -48,10 +91,6 @@ RSpec.describe 'PUT /api/polls', type: :request do
     it 'responds with unauthorized status' do
       expect(response).to have_http_status :unauthorized
     end
-
-  
-
- 
   end
 
 
@@ -101,3 +140,5 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 end
+
+
