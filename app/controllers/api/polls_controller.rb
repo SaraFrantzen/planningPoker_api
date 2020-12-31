@@ -54,15 +54,17 @@ class Api::PollsController < ApplicationController
   def points_update
     poll = Poll.find(params[:id])
     user = current_user.uid
-    if poll.votes.include?(user)
-      poll.votes.except!(user)
-      poll.save!
-      render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
-    elsif poll.persisted?
+    poll.votes = ({}) unless poll.votes
+    if !poll.votes.include?(user)
       poll.points.push(params['poll']['points'])
       poll.votes[user] = params['poll']['points']
       poll.save!
       render json: { message: 'successfully voted', votes: poll.votes, points: poll.points }, status: :ok
+    elsif poll.votes.include?(user)
+      poll.points.delete(params['poll']['points'])
+      poll.votes.except!(user)
+      poll.save!
+      render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
     else
       render status: :unauthorized
     end
