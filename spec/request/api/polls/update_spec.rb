@@ -87,13 +87,29 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.uid}": poll.points.to_s }
             }
           }
     end
 
     it 'responds with unauthorized status' do
       expect(response).to have_http_status :unauthorized
+    end
+  end
+
+  describe 'unsuccessfully vote - points are missing' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              points: nil,
+              votes: { "#{user.uid}": poll.points.to_s}
+            }
+          }, headers: headers
+    end
+
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unprocessable_entity
     end
   end
 

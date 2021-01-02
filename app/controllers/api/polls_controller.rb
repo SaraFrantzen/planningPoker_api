@@ -51,7 +51,9 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     user = current_user.uid
     poll.votes = ({}) unless poll.votes
-    if !poll.votes.include?(user)
+    if params['poll']['points'].nil?
+      render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
+    elsif !poll.votes.include?(user)
       poll.points.push(params['poll']['points'])
       poll.votes[user] = params['poll']['points']
       poll.save!
@@ -62,7 +64,7 @@ class Api::PollsController < ApplicationController
       poll.save!
       render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
     else
-      render status: :unauthorized
+      render json: { error_message: 'Unauthorized, You need to sign in before you can proceed' }, status: :unauthorized
     end
   end
 end
