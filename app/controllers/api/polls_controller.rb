@@ -61,7 +61,7 @@ class Api::PollsController < ApplicationController
       poll.save!
       render json: { message: 'successfully voted', votes: poll.votes, points: poll.points }, status: :ok
     elsif poll.votes.include?(user)
-      poll.points.delete(params['poll']['points'])
+      poll.points.delete(poll.votes[user])
       poll.votes.except!(user)
       poll.save!
       render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
