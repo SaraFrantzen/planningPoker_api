@@ -25,7 +25,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with team' do
       poll = Poll.last
-      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.uid]
+      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.name]
     end
   end
 

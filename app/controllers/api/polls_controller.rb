@@ -36,16 +36,12 @@ class Api::PollsController < ApplicationController
     params.require(:poll).permit(:title, :description, :tasks, points: [], team: [], votes: {})
   end
 
-  def user_email
-    current_user.uid
-  end
-
   def team_update
     poll = Poll.find(params[:id])
-    if poll.team.include?(current_user.uid)
+    if poll.team.include?(current_user.name)
       render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
     else
-      poll.team.push(current_user.uid)
+      poll.team.push(current_user.name)
       poll.save!
       render json: { message: 'successfully joined', team: poll.team }, status: :ok
     end
