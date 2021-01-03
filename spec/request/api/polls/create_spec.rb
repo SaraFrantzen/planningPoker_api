@@ -2,6 +2,13 @@ RSpec.describe 'POST /api/polls', type: :request do
   let(:user) { create(:user) }
   let(:credentials) { user.create_new_auth_token }
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
+  let(:image) do {
+    type: 'image/png',
+    encoder: 'name=my_picture',
+    data: 'asdadsdasd',
+    extension: 'png'
+  }
+end
 
   describe 'user successfully create an poll' do
     before do
@@ -13,7 +20,8 @@ RSpec.describe 'POST /api/polls', type: :request do
 							In order to provide a list of polls in DB.
 							I would like to provide an index endpoint for polls.',
                tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
-               points: []
+               points: [],
+               image: image
              }
            }, headers: headers
     end
@@ -32,6 +40,10 @@ RSpec.describe 'POST /api/polls', type: :request do
       expect(poll.description).to include 'As an API'
       expect(poll.tasks).to eq 'index action, routes to the action, polls model: title, description, polls Index in serializer'
       expect(poll.points).to eq [nil]
+    end
+
+    it 'poll is expected to have an image attached' do
+      expect(Poll.last.image.attached?).to eq true
     end
   end
 
@@ -78,6 +90,30 @@ RSpec.describe 'POST /api/polls', type: :request do
 
     it 'returns error message' do
       expect(response_json['errors'][0]).to eq 'You need to sign in or sign up before continuing.'
+    end
+  end
+
+  describe 'uunsuccessfully, no image' do
+    before do
+      post '/api/polls',
+           params: {
+             poll: {
+               title: 'API can provide polls index',
+               description: 'As an API.
+							In order to provide a list of polls in DB.
+							I would like to provide an index endpoint for polls.',
+               tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
+               points: [],
+             }
+           }, headers: headers
+    end
+
+    it 'responds with unprocessable entity status' do
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it "is expected to return error message" do
+      expect(response_json["message"]).to eq "You need to have an image for the poll"
     end
   end
 end
