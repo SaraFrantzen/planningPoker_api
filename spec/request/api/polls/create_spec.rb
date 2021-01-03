@@ -52,7 +52,8 @@ end
       post '/api/polls',
            params: {
              poll: {
-               title: 'API can provide polls index'
+               title: 'API can provide polls index',
+               image: image
              }
            }, headers: headers
     end
