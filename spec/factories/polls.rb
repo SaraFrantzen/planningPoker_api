@@ -5,7 +5,7 @@ FactoryBot.define do
     tasks { "MyTasks" }
     points { [2] }
     team { ["teamMember1@epidemic.com", "teamMember2@epidemic.com"]}
-    votes {{  }}
+    votes {{ "votingUser1@mail.com": 0, "votingUser2@mail.com": 2 }}
     association :user, factory: :user
   end
 end

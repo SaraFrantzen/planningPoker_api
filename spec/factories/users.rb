@@ -3,6 +3,6 @@ FactoryBot.define do
     email { "user#{rand(0..999)}@epidemic.com"  }
     password { 'password' }
     password_confirmation { 'password' }
-    name { 'user' }
+    name { "user#{rand(0..999)}" }
   end
 end

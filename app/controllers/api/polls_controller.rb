@@ -36,16 +36,12 @@ class Api::PollsController < ApplicationController
     params.require(:poll).permit(:title, :description, :tasks, points: [], team: [], votes: {})
   end
 
-  def user_email
-    current_user.uid
-  end
-
   def team_update
     poll = Poll.find(params[:id])
-    if poll.team.include?(current_user.uid)
+    if poll.team.include?(current_user.name)
       render json: { message: 'You already joined this poll' }, status: :unprocessable_entity
     else
-      poll.team.push(current_user.uid)
+      poll.team.push(current_user.name)
       poll.save!
       render json: { message: 'successfully joined', team: poll.team }, status: :ok
     end
@@ -53,14 +49,22 @@ class Api::PollsController < ApplicationController
 
   def points_update
     poll = Poll.find(params[:id])
-    if poll.persisted?
+    user = current_user.uid
+    poll.votes = ({}) unless poll.votes
+    if params['poll']['points'].nil?
+      render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
+    elsif !poll.votes.include?(user)
       poll.points.push(params['poll']['points'])
-      poll.votes = params['poll']['votes']
-      poll.votes.merge!(current_user.uid => params['poll']['points'])
+      poll.votes[user] = params['poll']['points']
       poll.save!
-      render json: { message: 'successfully voted', votes: poll.votes, points: poll.points}, status: :ok
+      render json: { message: 'successfully voted', votes: poll.votes, points: poll.points }, status: :ok
+    elsif poll.votes.include?(user)
+      poll.points.delete(poll.votes[user])
+      poll.votes.except!(user)
+      poll.save!
+      render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
     else
-      render status: :unauthorized
+      render json: { error_message: 'Unauthorized, You need to sign in before you can proceed' }, status: :unauthorized
     end
   end
 end
