@@ -4,6 +4,7 @@ RSpec.describe 'GET /api/polls', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
   let(:poll) { create(:poll) }
 
+
   describe 'visitor can see specific poll' do
     before do
       get "/api/polls/#{poll.id}",
@@ -27,6 +28,9 @@ RSpec.describe 'GET /api/polls', type: :request do
     end
     it "returns team for specific poll" do
       expect(response_json["poll"]["team"]).to eq ["teamMember1@epidemic.com", "teamMember2@epidemic.com"]
+    end
+    it 'returns image for specific poll' do
+      expect(response_json["poll"]["image"]).to eq true
     end
 	end
 	
