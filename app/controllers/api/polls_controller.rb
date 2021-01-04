@@ -8,10 +8,10 @@ class Api::PollsController < ApplicationController
 
   def create
     poll = current_user.polls.create(poll_params)
-    if poll.persisted? && attach_image(poll)
+    if poll.persisted? && attach_image(poll) || poll.persisted?
       render json: { message: 'successfully saved', id: poll.id }
     elsif !attach_image(poll)
-      render json: { message: "You need to have an image for the poll"}, status: :unprocessable_entity
+      render json: { message: 'You need to have an image for the poll' }, status: :unprocessable_entity
     else
       error_message(poll.errors)
     end
@@ -36,9 +36,7 @@ class Api::PollsController < ApplicationController
 
   def attach_image(poll)
     params_image = params[:poll][:image]
-    if params_image.present?
-      DecodeService.attach_image(params_image, poll.image) 
-    end
+    DecodeService.attach_image(params_image, poll.image) if params_image.present?
   end
 
   def poll_params
