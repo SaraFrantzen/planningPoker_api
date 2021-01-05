@@ -6,11 +6,12 @@ RSpec.describe 'POST /api/polls', type: :request do
   
     describe 'user successfully post comment to poll' do
       before do
-        post '/api/polls',
+        post '/api/comments',
              params: {
                  poll_id: poll.id,
                 comment: {
-                 content: 'myComment',
+                  user_name: user.name,
+                 comment: 'myComment',
                }
              }, headers: headers
       end
@@ -25,8 +26,8 @@ RSpec.describe 'POST /api/polls', type: :request do
   
       it 'creates an poll' do
         comment = Comment.last
-        expect(comment.content).to eq 'myComment'
-       
+        expect(comment.comment).to eq 'myComment'
+        expect(comment.user_name).to eq user.name
       end
     end
 end  

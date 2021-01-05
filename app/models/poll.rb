@@ -3,4 +3,5 @@ class Poll < ApplicationRecord
   belongs_to :user, class_name: "User"
   serialize :votes
   has_one_attached :image
+  has_many :comments
 end
