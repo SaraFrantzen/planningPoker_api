@@ -22,6 +22,9 @@ RSpec.describe 'GET /api/comments', type: :request do
       expect(response_json['comments'].first['comment']).to eq 'MyComment'
     end
 
+    it 'returns a specific user name' do
+      expect(response_json['comments'].first['user_name']).to eq 'UserName'
+    end
     it 'returns 5 comments' do
       expect(response_json['comments'].count).to eq 5
     end
