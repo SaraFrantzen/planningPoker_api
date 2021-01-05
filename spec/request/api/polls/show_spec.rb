@@ -4,6 +4,7 @@ RSpec.describe 'GET /api/polls', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
   let(:poll) { create(:poll) }
 
+
   describe 'visitor can see specific poll' do
     before do
       get "/api/polls/#{poll.id}",
