@@ -1,9 +1,9 @@
 Poll.destroy_all
 User.destroy_all
 
-user = User.create(name: "Sara", email: "sara@epidemicSound.com", password: "password")
 user1 = User.create(name: "Max", email: "max@epidemicSound.com", password: "password")
 user2 = User.create(name: "Mattias", email: "mattias@epidemicSound.com", password: "password")
+user = User.create(name: "Sara", email: "sara@epidemicSound.com", password: "password")
 
 poll1 = Poll.create(
   title: 'API can provide polls index',

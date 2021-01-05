@@ -29,9 +29,6 @@ RSpec.describe 'GET /api/polls', type: :request do
     it "returns team for specific poll" do
       expect(response_json["poll"]["team"]).to eq ["teamMember1@epidemic.com", "teamMember2@epidemic.com"]
     end
-    it 'returns image for specific poll' do
-      expect(response_json["poll"]["image"]).to eq true
-    end
 	end
 	
 	describe "request with wrong id fails" do

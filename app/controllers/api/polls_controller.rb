@@ -18,7 +18,6 @@ class Api::PollsController < ApplicationController
   def show
     poll = Poll.find(params[:id])
     render json: poll, serializer: PollsShowSerializer
-    
   rescue StandardError => e
     render json: { error_message: 'Sorry, that poll does not exist' }, status: :not_found
   end
@@ -57,7 +56,8 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     user = current_user.uid
     poll.votes = ({}) unless poll.votes
-    if params['poll']['points'].nil?
+
+    if params['poll']['points'].nil? && !poll.votes.include?(user)
       render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
     elsif !poll.votes.include?(user)
       poll.points.push(params['poll']['points'])
