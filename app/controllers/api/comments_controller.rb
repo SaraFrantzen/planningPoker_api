@@ -5,7 +5,7 @@ class Api::CommentsController < ApplicationController
         if comment.persisted?
             render json: { message: 'successfully saved'}
           else
-            error_message(comments.errors)
+            error_message(comment.errors)
           end
     end
 end
