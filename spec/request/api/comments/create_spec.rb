@@ -50,4 +50,28 @@ RSpec.describe 'POST /api/polls', type: :request do
       expect(response_json['message']).to eq "Comment can't be blank"
     end
   end
+
+  describe 'unauthorized without credentials unsuccessfully create an poll' do
+    let(:user) { create(:user) }
+    let(:credentials) { user.create_new_auth_token }
+    let(:headers) { { HTTP_ACCEPT: 'application/json' }}
+    let(:poll) { create(:poll) }
+
+    before do
+      post '/api/comments',
+           params: {
+             poll_id: poll.id,
+             comment: {
+               user_name: user.name,
+               comment: 'myComment'
+             }
+           }, headers: headers
+    end
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unauthorized
+    end
+    it 'returns error message' do
+      expect(response_json['errors'][0]).to eq 'You need to sign in or sign up before continuing.'
+    end
+  end
 end
