@@ -9,7 +9,7 @@ RSpec.describe 'GET /api/comments', type: :request do
     end
   end
 
-  describe 'visitor can see specific poll' do
+  describe 'visitor can see comments belonging to specific poll' do
     before do
       get "/api/comments/#{poll.id}"
     end
@@ -29,4 +29,6 @@ RSpec.describe 'GET /api/comments', type: :request do
       expect(response_json['comments'].count).to eq 5
     end
   end
+
+
 end
