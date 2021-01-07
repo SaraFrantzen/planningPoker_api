@@ -10,7 +10,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              team: [user.uid]
+              team: [user.name]
             }
           }, headers: headers
     end
@@ -25,7 +25,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with team' do
       poll = Poll.last
-      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.name]
+      expect(poll.team).to eq ['teamMember1', 'teamMember2', user.name]
     end
   end
 
@@ -33,13 +33,13 @@ RSpec.describe 'PUT /api/polls', type: :request do
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.uid.to_s }
+            poll: { team: user.name }
           }, headers: headers
     end
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.uid.to_s }
+            poll: { team: user.name }
           }, headers: headers
     end
     it 'responds with unprocessable_entity' do
