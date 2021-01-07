@@ -187,4 +187,34 @@ RSpec.describe 'PUT /api/polls', type: :request do
       expect(response).to have_http_status :unauthorized
     end
   end
+
+  describe 'user successfully close poll by assigning a result value' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              result: 2
+
+            }
+          }, headers: headers
+    end
+
+    it 'responds with ok status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns success message' do
+      expect(response_json['message']).to eq 'result successfully assigned'
+    end
+
+    it 'returns polls result' do
+      poll = Poll.last
+      expect(poll.result).to eq 2
+    end
+
+    it 'returns updated poll state' do
+      poll = Poll.last
+      expect(poll.state).to eq 'closed'
+    end
+end
 end
