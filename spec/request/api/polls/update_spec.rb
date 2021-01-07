@@ -57,7 +57,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s }
+              votes: { "#{user.name}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -77,7 +77,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq :"votingUser2@mail.com" => 2, :"votingUser1@mail.com" => 0, user.uid.to_s => '3'
+      expect(poll.votes).to eq :votingUser2 => 2, :votingUser1 => 0, user.name => '3'
     end
   end
 
@@ -119,7 +119,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.name}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -128,7 +128,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.name}": poll.points.to_s}
             }
           }, headers: headers
     end
@@ -143,7 +143,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq "votingUser1@mail.com": 0, "votingUser2@mail.com": 2
+      expect(poll.votes).to eq "votingUser1": 0, "votingUser2": 2
     end
   end
 
