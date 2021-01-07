@@ -27,6 +27,8 @@ class Api::PollsController < ApplicationController
       team_update
     elsif params['poll']['votes']
       points_update
+    elsif params['poll']['state']
+      state_update
     end
   end
 
@@ -72,5 +74,15 @@ class Api::PollsController < ApplicationController
     else
       render json: { error_message: 'Unauthorized, You need to sign in before you can proceed' }, status: :unauthorized
     end
+  end
+
+  def state_update
+    poll = Poll.find(params[:id])
+    poll.update!(update_params)
+    render json: { message: 'Voting succesfully closed' }, status: :ok
+  end
+
+  def update_params
+    params.require(:poll).permit(:state)
   end
 end
