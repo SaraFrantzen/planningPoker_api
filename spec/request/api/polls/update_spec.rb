@@ -103,7 +103,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: nil,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.uid}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -153,11 +153,10 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               state: 'pending'
-             
+
             }
           }, headers: headers
     end
-  
 
     it 'responds with ok status' do
       expect(response).to have_http_status :ok
@@ -170,6 +169,22 @@ RSpec.describe 'PUT /api/polls', type: :request do
     it 'returns updated poll state' do
       poll = Poll.last
       expect(poll.state).to eq 'pending'
+    end
+  end
+
+  describe 'unsuccessfully close voting - not authorized' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              state: 'pending'
+
+            }
+          }
+    end
+
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unauthorized
     end
   end
 end

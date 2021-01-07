@@ -58,7 +58,6 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     user = current_user.uid
     poll.votes = ({}) unless poll.votes
-
     if params['poll']['points'].nil? && !poll.votes.include?(user)
       render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
     elsif !poll.votes.include?(user)
@@ -79,7 +78,7 @@ class Api::PollsController < ApplicationController
   def state_update
     poll = Poll.find(params[:id])
     poll.update!(update_params)
-    render json: { message: 'Voting succesfully closed' }, status: :ok
+    render json: { message: 'Voting succesfully closed', state: poll.state, votes: poll.votes }, status: :ok
   end
 
   def update_params
