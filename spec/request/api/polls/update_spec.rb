@@ -10,7 +10,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              team: [user.uid]
+              team: [user.name]
             }
           }, headers: headers
     end
@@ -25,7 +25,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with team' do
       poll = Poll.last
-      expect(poll.team).to eq ['teamMember1@epidemic.com', 'teamMember2@epidemic.com', user.name]
+      expect(poll.team).to eq ['teamMember1', 'teamMember2', user.name]
     end
   end
 
@@ -33,13 +33,13 @@ RSpec.describe 'PUT /api/polls', type: :request do
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.uid.to_s }
+            poll: { team: user.name }
           }, headers: headers
     end
     before do
       put "/api/polls/#{poll.id}",
           params: {
-            poll: { team: user.uid.to_s }
+            poll: { team: user.name }
           }, headers: headers
     end
     it 'responds with unprocessable_entity' do
@@ -57,7 +57,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s }
+              votes: { "#{user.name}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -77,7 +77,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq :"votingUser2@mail.com" => 2, :"votingUser1@mail.com" => 0, user.uid.to_s => '3'
+      expect(poll.votes).to eq :votingUser2 => 2, :votingUser1 => 0, user.name => '3'
     end
   end
 
@@ -103,7 +103,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: nil,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.uid}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -119,7 +119,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.name}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -128,7 +128,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.uid}": poll.points.to_s}
+              votes: { "#{user.name}": poll.points.to_s}
             }
           }, headers: headers
     end
@@ -143,7 +143,48 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq "votingUser1@mail.com": 0, "votingUser2@mail.com": 2
+      expect(poll.votes).to eq "votingUser1": 0, "votingUser2": 2
+    end
+  end
+
+  describe 'user successfully close voting by changing poll state from ongoing to pending' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              state: 'pending'
+
+            }
+          }, headers: headers
+    end
+
+    it 'responds with ok status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns success message' do
+      expect(response_json['message']).to eq 'Voting succesfully closed'
+    end
+
+    it 'returns updated poll state' do
+      poll = Poll.last
+      expect(poll.state).to eq 'pending'
+    end
+  end
+
+  describe 'unsuccessfully close voting - not authorized' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              state: 'pending'
+
+            }
+          }
+    end
+
+    it 'responds with unauthorized status' do
+      expect(response).to have_http_status :unauthorized
     end
   end
 end

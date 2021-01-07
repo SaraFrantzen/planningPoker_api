@@ -26,8 +26,11 @@ RSpec.describe 'GET /api/polls', type: :request do
     it 'returns a specific poll tasks' do
       expect(response_json['poll']['tasks']).to eq 'MyTasks'
     end
+    it 'returns a specific poll state' do
+      expect(response_json['poll']['state']).to eq 'ongoing'
+    end
     it "returns team for specific poll" do
-      expect(response_json["poll"]["team"]).to eq ["teamMember1@epidemic.com", "teamMember2@epidemic.com"]
+      expect(response_json["poll"]["team"]).to eq ["teamMember1", "teamMember2"]
     end
 	end
 	

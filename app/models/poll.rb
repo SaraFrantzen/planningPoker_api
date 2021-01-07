@@ -4,4 +4,5 @@ class Poll < ApplicationRecord
   serialize :votes
   has_one_attached :image
   has_many :comments
+  enum state: [:ongoing, :pending, :closed]
 end
