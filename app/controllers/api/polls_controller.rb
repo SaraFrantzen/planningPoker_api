@@ -29,6 +29,8 @@ class Api::PollsController < ApplicationController
       points_update
     elsif params['poll']['state']
       state_update
+    elsif params['poll']['result']
+      result_update
     end
   end
 
@@ -78,11 +80,17 @@ class Api::PollsController < ApplicationController
   def state_update
     poll = Poll.find(params[:id])
     poll.update!(update_params)
-
     render json: { message: 'Voting succesfully closed', state: poll.state, votes: poll.votes }, status: :ok
   end
 
   def update_params
-    params.require(:poll).permit(:state)
+    params.require(:poll).permit(:state, :result)
+  end
+
+  def result_update
+    poll = Poll.find(params[:id])
+    poll.update!(update_params)
+    poll.update!({state: "closed"})
+    render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
   end
 end
