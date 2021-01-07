@@ -5,7 +5,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
   let!(:user1) { create(:user, email: 're-vote_user@mail.com') }
 
-  xdescribe 'user successfully join a poll' do
+  describe 'user successfully join a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -29,7 +29,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'unsuccessfully join - user already joined a poll' do
+  describe 'unsuccessfully join - user already joined a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -51,7 +51,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'user successfully vote on a poll' do
+  describe 'user successfully vote on a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -81,7 +81,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'unsuccessfully vote - not authorized' do
+  describe 'unsuccessfully vote - not authorized' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -97,7 +97,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'unsuccessfully vote - points are missing' do
+  describe 'unsuccessfully vote - points are missing' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -113,7 +113,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'user successfully un-vote on a poll' do
+  describe 'user successfully un-vote on a poll' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -128,7 +128,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
           params: {
             poll: {
               points: 3,
-              votes: { "#{user.name}": poll.points.to_s}
+              votes: { "#{user.name}": poll.points.to_s }
             }
           }, headers: headers
     end
@@ -147,7 +147,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'user successfully close voting by changing poll state from ongoing to pending' do
+  describe 'user successfully close voting by changing poll state from ongoing to pending' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -172,7 +172,7 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  xdescribe 'unsuccessfully close voting - not authorized' do
+  describe 'unsuccessfully close voting - not authorized' do
     before do
       put "/api/polls/#{poll.id}",
           params: {
@@ -216,5 +216,31 @@ RSpec.describe 'PUT /api/polls', type: :request do
       poll = Poll.last
       expect(poll.state).to eq 'closed'
     end
-end
+  end
+
+  describe 'unsuccessfully close - result value is already assigned' do
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              result: 2
+            }
+          }, headers: headers
+    end
+    before do
+      put "/api/polls/#{poll.id}",
+          params: {
+            poll: {
+              result: 2
+            }
+          }, headers: headers
+    end
+    it 'responds with unprocessable_entity' do
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it 'returns error message' do
+      expect(response_json['message']).to eq 'result is already assigned'
+    end
+  end
 end

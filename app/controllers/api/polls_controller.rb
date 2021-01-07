@@ -89,8 +89,12 @@ class Api::PollsController < ApplicationController
 
   def result_update
     poll = Poll.find(params[:id])
+    if poll.result.nil?
     poll.update!(update_params)
     poll.update!({state: "closed"})
     render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
+    else
+      render json: { message: 'result is already assigned' }, status: :unprocessable_entity
+    end
   end
 end
