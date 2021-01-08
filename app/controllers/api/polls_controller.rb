@@ -9,6 +9,7 @@ class Api::PollsController < ApplicationController
   def create
     poll = current_user.polls.create(poll_params)
     if poll.persisted? && attach_image(poll) || poll.persisted?
+      poll.update!({state: "ongoing"})
       render json: { message: 'successfully saved', id: poll.id }
     else
       error_message(poll.errors)

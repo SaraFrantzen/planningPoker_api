@@ -41,6 +41,7 @@ RSpec.describe 'POST /api/polls', type: :request do
       expect(poll.description).to include 'As an API'
       expect(poll.tasks).to eq 'index action, routes to the action, polls model: title, description, polls Index in serializer'
       expect(poll.points).to eq [nil]
+      expect(poll.state).to eq 'ongoing'
     end
 
     it 'poll is expected to have an image attached' do
