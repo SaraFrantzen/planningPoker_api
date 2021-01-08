@@ -15,6 +15,7 @@ RSpec.describe Poll, type: :model do
     it { is_expected.to have_db_column :votes }
     it { is_expected.to have_db_column :state }
     it { is_expected.to have_db_column :result }
+    it { is_expected.to have_db_column :category }
   end
 
   describe "Validations" do
@@ -22,5 +23,6 @@ RSpec.describe Poll, type: :model do
     it { is_expected.to validate_presence_of :description }
     it { is_expected.to have_db_column :tasks }
     it { is_expected.to have_db_column :points }
+    it { is_expected.to have_db_column :category }
   end
 end
