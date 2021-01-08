@@ -1,6 +1,7 @@
 Poll.destroy_all
 User.destroy_all
 
+user = User.create(name: "User", email: "user@mail", password: "password")
 user1 = User.create(name: "Max", email: "max@epidemicSound.com", password: "password")
 user2 = User.create(name: "Mattias", email: "mattias@epidemicSound.com", password: "password")
 user = User.create(name: "Sara", email: "sara@epidemicSound.com", password: "password")
@@ -12,6 +13,7 @@ poll1 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 poll2 = Poll.create(
@@ -21,6 +23,7 @@ poll2 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103536110-310c1800-4e92-11eb-87ca-86eef4f147b8.jpg')
@@ -34,6 +37,7 @@ poll3 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -44,6 +48,7 @@ poll4 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103564601-17cd9080-4ebf-11eb-9215-1b4e79ad7a3b.jpg')
@@ -56,6 +61,7 @@ poll5 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -66,6 +72,7 @@ poll6 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103560884-df2ab880-4eb8-11eb-8ac1-6f855e6baeaa.jpg')
@@ -78,6 +85,7 @@ poll7 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103561371-af2fe500-4eb9-11eb-86df-8195d7af5f00.jpg')
@@ -90,6 +98,7 @@ poll8 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -100,6 +109,7 @@ poll9 = Poll.create(
   points: [2],
   votes: { "Sara": 2},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103561744-3d0bd000-4eba-11eb-92c2-91ba76bc93ed.jpg')
@@ -112,6 +122,7 @@ poll10 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -122,6 +133,7 @@ poll11 = Poll.create(
   points: [0],
   votes: { "Sara": 0},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103562341-2f0a7f00-4ebb-11eb-8304-9b926429f00a.jpg')
@@ -134,6 +146,7 @@ poll12 = Poll.create(
   points: [2],
   votes: { "Sara": 2},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -144,6 +157,7 @@ poll13 = Poll.create(
   points: [2],
   votes: { "Sara": 2},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103564137-56168000-4ebe-11eb-832d-4d878828ee7c.jpg')
@@ -156,6 +170,7 @@ poll14 = Poll.create(
   points: [2],
   votes: { "Sara": 2},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -166,6 +181,7 @@ poll15 = Poll.create(
   points: [1],
   votes: { "Sara": 1},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103564256-7d6d4d00-4ebe-11eb-875d-e7aed92ec5e1.jpg')
@@ -178,6 +194,7 @@ poll16 = Poll.create(
   points: [0],
   votes: { "Sara": 0},
   team: ["Sara"],
+  category: "api",
   user_id: user.id
 )
 
@@ -188,6 +205,7 @@ poll17 = Poll.create(
   points: [0],
   votes: { "Sara": 0},
   team: ["Sara"],
+  category: "client",
   user_id: user.id
 )
 file = URI.open('https://user-images.githubusercontent.com/68189237/103564914-a6daa880-4ebf-11eb-8ce7-96ac6868496a.jpg')
