@@ -2,7 +2,7 @@ RSpec.describe 'POST /api/polls', type: :request do
   let(:user) { create(:user) }
   let(:credentials) { user.create_new_auth_token }
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
-  let(:image) do
+  let!(:image) do
     {
       type: 'image/png',
       encoder: 'name=my_picture',
@@ -22,7 +22,8 @@ RSpec.describe 'POST /api/polls', type: :request do
 							I would like to provide an index endpoint for polls.',
                tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
                points: [],
-               image: image
+               image: image,
+               category: 'api',
              }
            }, headers: headers
     end
@@ -65,7 +66,7 @@ RSpec.describe 'POST /api/polls', type: :request do
     end
 
     it 'returns a unsuccesfully message if params are blank' do
-      expect(response_json['message']).to eq "Description can't be blank and Tasks can't be blank"
+      expect(response_json['message']).to eq "Description can't be blank, Tasks can't be blank, and Category can't be blank"
     end
   end
 

@@ -50,7 +50,7 @@ class Api::PollsController < ApplicationController
   end
 
   def poll_params
-    params.require(:poll).permit(:title, :description, :tasks, points: [], team: [], votes: {})
+    params.require(:poll).permit(:title, :description, :tasks, :category, points: [], team: [], votes: {})
   end
 
   def team_update
