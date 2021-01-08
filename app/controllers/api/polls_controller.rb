@@ -3,13 +3,20 @@ class Api::PollsController < ApplicationController
 
   def index
     polls = Poll.all
+    polls = if params[:category]
+              Poll.where(category: params[:category])
+            else
+              Poll.all
+            end
     render json: polls, each_serializer: PollsIndexSerializer
+  rescue StandardError
+    render json: { error: "Sorry, we don't have that category" }, status: :not_found
   end
 
   def create
     poll = current_user.polls.create(poll_params)
     if poll.persisted? && attach_image(poll) || poll.persisted?
-      poll.update!({state: "ongoing"})
+      poll.update!({ state: 'ongoing'})
       render json: { message: 'successfully saved', id: poll.id }
     else
       error_message(poll.errors)
@@ -43,7 +50,7 @@ class Api::PollsController < ApplicationController
   end
 
   def poll_params
-    params.require(:poll).permit(:title, :description, :tasks, points: [], team: [], votes: {})
+    params.require(:poll).permit(:title, :description, :tasks, :category, points: [], team: [], votes: {})
   end
 
   def team_update
@@ -91,9 +98,9 @@ class Api::PollsController < ApplicationController
   def result_update
     poll = Poll.find(params[:id])
     if poll.result.nil?
-    poll.update!(update_params)
-    poll.update!({state: "closed"})
-    render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
+      poll.update!(update_params)
+      poll.update!({state: 'closed'})
+      render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
     else
       render json: { message: 'result is already assigned' }, status: :unprocessable_entity
     end
