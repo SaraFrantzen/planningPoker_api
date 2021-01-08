@@ -5,4 +5,5 @@ class Poll < ApplicationRecord
   has_one_attached :image
   has_many :comments
   enum state: [:ongoing, :pending, :closed]
+  enum category: [:api, :client]
 end
