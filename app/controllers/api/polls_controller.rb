@@ -9,6 +9,7 @@ class Api::PollsController < ApplicationController
   def create
     poll = current_user.polls.create(poll_params)
     if poll.persisted? && attach_image(poll) || poll.persisted?
+      poll.update!({state: "ongoing"})
       render json: { message: 'successfully saved', id: poll.id }
     else
       error_message(poll.errors)
@@ -29,6 +30,8 @@ class Api::PollsController < ApplicationController
       points_update
     elsif params['poll']['state']
       state_update
+    elsif params['poll']['result']
+      result_update
     end
   end
 
@@ -78,11 +81,21 @@ class Api::PollsController < ApplicationController
   def state_update
     poll = Poll.find(params[:id])
     poll.update!(update_params)
-
     render json: { message: 'Voting succesfully closed', state: poll.state, votes: poll.votes }, status: :ok
   end
 
   def update_params
-    params.require(:poll).permit(:state)
+    params.require(:poll).permit(:state, :result)
+  end
+
+  def result_update
+    poll = Poll.find(params[:id])
+    if poll.result.nil?
+    poll.update!(update_params)
+    poll.update!({state: "closed"})
+    render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
+    else
+      render json: { message: 'result is already assigned' }, status: :unprocessable_entity
+    end
   end
 end
