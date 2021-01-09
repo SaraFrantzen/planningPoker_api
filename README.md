@@ -27,3 +27,17 @@ To use this server, fork this repository to your own GitHub account and clone it
 * Run all test suites :
 
 ``` $ rspec ```
+
+* Start the server (port: 3000) :
+
+``` $ rails s ```
+
+* Generate Rails Master key :
+
+``` $ EDITOR="code --wait" rails credentials:edit ```
+
+* Open console :
+
+``` $ rails c ```
+
+
