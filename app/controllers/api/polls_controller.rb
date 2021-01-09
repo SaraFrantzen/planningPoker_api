@@ -16,7 +16,7 @@ class Api::PollsController < ApplicationController
   def create
     poll = current_user.polls.create(poll_params)
     if poll.persisted? && attach_image(poll) || poll.persisted?
-      poll.update!({ state: 'ongoing'})
+      poll.update!({ state: 'ongoing' })
       render json: { message: 'successfully saved', id: poll.id }
     else
       error_message(poll.errors)
@@ -50,7 +50,7 @@ class Api::PollsController < ApplicationController
   end
 
   def poll_params
-    params.require(:poll).permit(:title, :description, :tasks, :category, points: [], team: [], votes: {})
+    params.require(:poll).permit(:title, :description, :tasks, :category, team: [], votes: {})
   end
 
   def team_update
@@ -68,18 +68,16 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     user = current_user.name
     poll.votes = ({}) unless poll.votes
-    if params['poll']['points'].nil? && !poll.votes.include?(user)
+    if params['poll']['votes']['user'].nil? && !poll.votes.include?(user)
       render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
     elsif !poll.votes.include?(user)
-      poll.points.push(params['poll']['points'])
-      poll.votes[user] = params['poll']['points']
+      poll.votes[user] = params['poll']['votes']['user']
       poll.save!
-      render json: { message: 'successfully voted', votes: poll.votes, points: poll.points }, status: :ok
+      render json: { message: 'successfully voted', votes: poll.votes }, status: :ok
     elsif poll.votes.include?(user)
-      poll.points.delete(poll.votes[user])
       poll.votes.except!(user)
       poll.save!
-      render json: { message: 'successfully un-voted', votes: poll.votes, points: poll.points }, status: :ok
+      render json: { message: 'successfully un-voted', votes: poll.votes }, status: :ok
     else
       render json: { error_message: 'Unauthorized, You need to sign in before you can proceed' }, status: :unauthorized
     end
@@ -99,7 +97,7 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     if poll.result.nil?
       poll.update!(update_params)
-      poll.update!({state: 'closed'})
+      poll.update!({ state: 'closed' })
       render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
     else
       render json: { message: 'result is already assigned' }, status: :unprocessable_entity
