@@ -1,5 +1,5 @@
 class PollsShowSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :tasks, :points, :team, :votes, :image, :state, :result
+  attributes :id, :title, :description, :tasks, :team, :votes, :image, :state, :result
 
   def image
     return nil unless object.image.attached?

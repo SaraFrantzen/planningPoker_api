@@ -21,7 +21,6 @@ RSpec.describe 'POST /api/polls', type: :request do
 							In order to provide a list of polls in DB.
 							I would like to provide an index endpoint for polls.',
                tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
-               points: [],
                image: image,
                category: 'api',
              }
@@ -41,7 +40,6 @@ RSpec.describe 'POST /api/polls', type: :request do
       expect(poll.title).to eq 'API can provide polls index'
       expect(poll.description).to include 'As an API'
       expect(poll.tasks).to eq 'index action, routes to the action, polls model: title, description, polls Index in serializer'
-      expect(poll.points).to eq [nil]
       expect(poll.state).to eq 'ongoing'
     end
 
@@ -83,8 +81,7 @@ RSpec.describe 'POST /api/polls', type: :request do
                description: 'As an API.
 							In order to provide a list of polls in DB.
 							I would like to provide an index endpoint for polls.',
-               tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
-               points: []
+               tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer'
              }
            }, headers: headers
     end

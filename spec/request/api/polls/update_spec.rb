@@ -53,11 +53,11 @@ RSpec.describe 'PUT /api/polls', type: :request do
 
   describe 'user successfully vote on a poll' do
     before do
+   user = User.name
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              points: 3,
-              votes: { "#{user.name}": poll.points.to_s }
+              votes: { user: 3}
             }
           }, headers: headers
     end
@@ -70,14 +70,11 @@ RSpec.describe 'PUT /api/polls', type: :request do
       expect(response_json['message']).to eq 'successfully voted'
     end
 
-    it 'updates an poll with points' do
-      poll = Poll.last
-      expect(poll.points).to eq [2, 3]
-    end
+  
 
     it 'updates an poll with votes' do
       poll = Poll.last
-      expect(poll.votes).to eq :votingUser2 => 2, :votingUser1 => 0, user.name => '3'
+      expect(poll.votes).to eq :votingUser2 => 2, :votingUser1 => 0, user.name => "3"
     end
   end
 
@@ -86,8 +83,8 @@ RSpec.describe 'PUT /api/polls', type: :request do
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              points: 3,
-              votes: { "#{user.uid}": poll.points.to_s }
+             
+              votes: { "#{user.name}": 3}
             }
           }
     end
@@ -97,29 +94,14 @@ RSpec.describe 'PUT /api/polls', type: :request do
     end
   end
 
-  describe 'unsuccessfully vote - points are missing' do
-    before do
-      put "/api/polls/#{poll.id}",
-          params: {
-            poll: {
-              points: nil,
-              votes: { "#{user.uid}": poll.points.to_s }
-            }
-          }, headers: headers
-    end
-
-    it 'responds with unauthorized status' do
-      expect(response).to have_http_status :unprocessable_entity
-    end
-  end
-
   describe 'user successfully un-vote on a poll' do
     before do
+      user = User.name
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              points: 3,
-              votes: { "#{user.name}": poll.points.to_s }
+            
+              votes: { user: 3 }
             }
           }, headers: headers
     end
@@ -127,8 +109,8 @@ RSpec.describe 'PUT /api/polls', type: :request do
       put "/api/polls/#{poll.id}",
           params: {
             poll: {
-              points: 3,
-              votes: { "#{user.name}": poll.points.to_s }
+            
+              votes: { user: 3 }
             }
           }, headers: headers
     end
