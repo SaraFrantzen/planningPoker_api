@@ -69,7 +69,6 @@ class Api::PollsController < ApplicationController
     user = current_user.name
     poll.votes = ({}) unless poll.votes
     if params['poll']['votes']['user'].nil? && !poll.votes.include?(user)
-    
       render json: { error_message: 'You need to pick a value to vote' }, status: :unprocessable_entity
     elsif !poll.votes.include?(user)
       poll.votes[user] = params['poll']['votes']['user']
@@ -98,7 +97,7 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     if poll.result.nil?
       poll.update!(update_params)
-      poll.update!({state: 'closed'})
+      poll.update!({ state: 'closed'})
       render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
     else
       render json: { message: 'result is already assigned' }, status: :unprocessable_entity

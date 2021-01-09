@@ -22,7 +22,7 @@ RSpec.describe 'POST /api/polls', type: :request do
 							I would like to provide an index endpoint for polls.',
                tasks: 'index action, routes to the action, polls model: title, description, polls Index in serializer',
                image: image,
-               category: 'api',
+               category: 'api'
              }
            }, headers: headers
     end
