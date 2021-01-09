@@ -1,24 +1,27 @@
-# README
+Continious Integration: Coveralls & Semaphore
+[![Coverage Status](https://coveralls.io/repos/github/Saralundkvist86/planningPoker_api/badge.svg)](https://coveralls.io/github/Saralundkvist86/planningPoker_api)
+[![Build Status](https://semaphoreci.com/api/v1/saralundkvist86/planningpoker_api/branches/api_can_provide_polls_categorized/badge.svg)](https://semaphoreci.com/saralundkvist86/planningpoker_api)
+Continious deployment is preformed using Heroku
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Planning Poker API
 
-Things you may want to cover:
+## The server
+This Ruby on Rails server hosts [Planning Poker client](https://github.com/Saralundkvist86/planningPoker_client)
 
-* Ruby version
+#### Setup
+To use this server, fork this repository to your own GitHub account and clone it to your local workspace.
 
-* System dependencies
+Install all of the dependencies:
 
-* Configuration
+``` $ bundle ```
 
-* Database creation
+Create and migrate local database :
 
-* Database initialization
+``` $ Rails db:create db:migrate ```
 
-* How to run the test suite
+Seed local database :
+``` $ Rails db:seed ```
 
-* Services (job queues, cache servers, search engines, etc.)
+Run all test suites
 
-* Deployment instructions
-
-* ...
+``` $ rspec ```
