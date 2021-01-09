@@ -50,7 +50,7 @@ class Api::PollsController < ApplicationController
   end
 
   def poll_params
-    params.require(:poll).permit(:title, :description, :tasks, :category, points: [], team: [], votes: {})
+    params.require(:poll).permit(:title, :description, :tasks, :category, team: [], votes: {})
   end
 
   def team_update
@@ -97,7 +97,7 @@ class Api::PollsController < ApplicationController
     poll = Poll.find(params[:id])
     if poll.result.nil?
       poll.update!(update_params)
-      poll.update!({ state: 'closed'})
+      poll.update!({ state: 'closed' })
       render json: { message: 'result successfully assigned', state: poll.state, result: poll.result }, status: :ok
     else
       render json: { message: 'result is already assigned' }, status: :unprocessable_entity
