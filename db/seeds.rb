@@ -4,6 +4,8 @@ User.destroy_all
 user = User.create(name: 'User', email: 'user@mail.com', password: 'password')
 user1 = User.create(name: 'Max', email: 'max@epidemicSound.com', password: 'password')
 user2 = User.create(name: 'Mattias', email: 'mattias@epidemicSound.com', password: 'password')
+user3 = User.create(name: 'Hayne', email: 'hayne@epidemicsound.com', password: 'password')
+user4 = User.create(name: 'Björn', email: 'bjorn@epidemicSound.com', password: 'password')
 user = User.create(name: 'Sara', email: 'sara@epidemicSound.com', password: 'password')
 
 poll1 = Poll.create(
